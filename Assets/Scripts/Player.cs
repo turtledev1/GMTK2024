@@ -36,6 +36,10 @@ public class Player : MonoBehaviour {
         return transform.position.y;
     }
 
+    public float GetDistanceFromCenter() {
+        return Mathf.Abs(transform.position.x);
+    }
+
     public bool IsMoving() {
         return shouldMove;
     }

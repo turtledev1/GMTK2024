@@ -39,7 +39,6 @@ public class LayerManager : MonoBehaviour {
         if (layer != newLayer) {
             layer = newLayer;
             OnLayerChanged?.Invoke(this, EventArgs.Empty);
-            Debug.Log("New layer reached: " + layer);
         }
     }
 

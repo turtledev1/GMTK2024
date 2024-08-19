@@ -24,15 +24,14 @@ public class SoundManager : MonoBehaviour {
     }
 
     private void GameManager_OnLadderLost(object sender, System.EventArgs e) {
-        PlaySound(ladderLost, Camera.main.transform.position);
+        PlaySound(ladderLost, Camera.main.transform.position + Vector3.forward);
     }
 
     private void GameManager_OnLadderAdded(object sender, GameManager.OnLadderAddedEventArgs e) {
-        PlaySound(ladderLanded, Camera.main.transform.position);
+        PlaySound(ladderLanded, Camera.main.transform.position + Vector3.forward);
     }
 
     private void PlaySound(AudioClip audioClip, Vector3 position, float volumeMultiplier = 1f) {
-        Debug.Log("Playing: " + audioClip + " at volume " + volumeMultiplier * volume);
         AudioSource.PlayClipAtPoint(audioClip, position, volumeMultiplier * volume);
     }
 

@@ -2947,6 +2947,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   finishGameMusic: {fileID: 8300000, guid: f828a48f473845149a7e2494f5575c91, type: 3}
+  stackingScore: {fileID: 11400000, guid: 4637dbab10e75da4794ad50d543b736e, type: 2}
 --- !u!1 &544769365
 GameObject:
   m_ObjectHideFlags: 0

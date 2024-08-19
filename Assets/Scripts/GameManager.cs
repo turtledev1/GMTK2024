@@ -29,6 +29,7 @@ public class GameManager : MonoBehaviour {
 
     private State state;
     private GameObject currentFallingLadder;
+    private float timeToReachTheMoon = 0;
     private int numberOfLives = 5;
     private int currentNumberOfLadders;
     private List<GameObject> currentBuiltLadder = new List<GameObject>();
@@ -58,6 +59,7 @@ public class GameManager : MonoBehaviour {
         if (LayerManager.Instance.GetCurrentLayer() == LayerManager.Layer.Moon) {
             ChangeState(State.ReachedTheMoon);
             MusicManager.Instance.ChangeMusic(finishGameMusic);
+            UpdateHighScoreIfNecessary();
             OnCompleteGame?.Invoke(this, EventArgs.Empty);
         }
     }
@@ -67,6 +69,7 @@ public class GameManager : MonoBehaviour {
             case State.WaitingToStart:
                 break;
             case State.GamePlaying:
+                timeToReachTheMoon += Time.deltaTime;
                 bool isCurrentLadderNull = currentFallingLadder == null;
                 bool didNotReachTheMoon = currentNumberOfLadders < LayerManager.Instance.GetMaxHeightForLayer(LayerManager.Layer.Space);
                 bool shouldSpawnNewLadder = isCurrentLadderNull && didNotReachTheMoon;
@@ -84,6 +87,11 @@ public class GameManager : MonoBehaviour {
     private void ChangeState(State newState) {
         state = newState;
         OnGameStateChanged?.Invoke(this, EventArgs.Empty);
+    }
+
+    private void UpdateHighScoreIfNecessary() {
+        var currentScore = new StackingScore(Player.Instance.GetDistanceFromCenter(), timeToReachTheMoon, numberOfLives);
+        HighScore.SaveHighScoreIfNecessary(currentScore);
     }
 
     public bool IsGamePlaying() {
@@ -111,7 +119,6 @@ public class GameManager : MonoBehaviour {
         OnLadderAdded?.Invoke(this, new OnLadderAddedEventArgs {
             ladderPosition = ladder.transform.position,
         });
-        Debug.Log("OnLadderAdded: " + currentNumberOfLadders);
     }
 
     public void LoseLadder() {
@@ -119,8 +126,6 @@ public class GameManager : MonoBehaviour {
         currentFallingLadder = null;
         OnLadderLost?.Invoke(this, EventArgs.Empty);
         OnLifeLost?.Invoke(this, EventArgs.Empty);
-
-        Debug.Log("Life lost: " + numberOfLives);
 
         if (numberOfLives <= 0) {
             ChangeState(State.GameOver);

@@ -28,7 +28,6 @@ public class CloudsManager : MonoBehaviour {
 
     private void SpawnCloud() {
         Vector2 direction = new Vector2(Random.Range(-1f, 1f) > 0 ? 1 : -1, 0);
-        Debug.Log("Spawn cloud: " + direction);
 
         Vector3 screenLeftBottom = Camera.main.ViewportToWorldPoint(new Vector3(0f, 0.3f, 0));
         Vector3 screenLeftTop = Camera.main.ViewportToWorldPoint(new Vector3(0f, 1f, 0));
