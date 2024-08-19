@@ -23,7 +23,6 @@ public class Plane : MonoBehaviour {
         noise.m_FrequencyGain = 1.5f;
     }
 
-    // Update is called once per frame
     private void Update() {
         float newX = transform.position.x + direction.x * moveSpeed * Time.deltaTime;
         transform.position = new Vector2(newX, transform.position.y);
