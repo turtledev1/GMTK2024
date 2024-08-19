@@ -40,9 +40,9 @@ public class CloudsManager : MonoBehaviour {
         GameObject cloud;
 
         if (direction.x < 0) {
-            cloud = Instantiate(cloudPrefab, new Vector3(screenRightBottom.x + 2f, height), Quaternion.identity);
+            cloud = Instantiate(cloudPrefab, new Vector3(screenRightBottom.x + 6f, height), Quaternion.identity);
         } else {
-            cloud = Instantiate(cloudPrefab, new Vector3(screenLeftBottom.x - 2f, height), Quaternion.identity);
+            cloud = Instantiate(cloudPrefab, new Vector3(screenLeftBottom.x - 6f, height), Quaternion.identity);
         }
         cloud.GetComponent<CloudEffect>().SetDirection(direction);
     }

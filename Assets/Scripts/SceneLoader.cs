@@ -6,9 +6,9 @@ using UnityEngine.SceneManagement;
 public static class SceneLoader {
 
     public enum Scene {
-        MainMenuScene,
+        MainMenu,
         GameScene,
-        LoadingScene,
+        LoadingScene
     }
 
     private static Scene targetScene;

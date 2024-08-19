@@ -24,7 +24,7 @@ public class EffectManager : MonoBehaviour {
         switch (currentLayer) {
             case LayerManager.Layer.Ground:
                 WindManager.Instance.SetIsActive(false);
-                CloudsManager.Instance.SetIsActive(false);
+                CloudsManager.Instance.SetIsActive(true);
                 PlanesManager.Instance.SetIsActive(false);
                 AlienManager.Instance.SetIsActive(false);
                 MeteorManager.Instance.SetIsActive(false);

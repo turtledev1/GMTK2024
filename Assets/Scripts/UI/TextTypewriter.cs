@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -14,15 +15,17 @@ public class TextTypewriter : MonoBehaviour {
         text = GetComponent<TextMeshProUGUI>();
     }
 
-    private IEnumerator ShowText() {
+    private IEnumerator ShowText(Action callback) {
         for (int i = 0; i <= fullText.Length; i++) {
             currentText = fullText.Substring(0, i);
             text.text = currentText;
             yield return new WaitForSeconds(delay);
         }
+        yield return new WaitForSeconds(2);
+        callback?.Invoke();
     }
 
-    public void StartShowing() {
-        StartCoroutine(ShowText());
+    public void StartShowing(Action callback) {
+        StartCoroutine(ShowText(callback));
     }
 }
