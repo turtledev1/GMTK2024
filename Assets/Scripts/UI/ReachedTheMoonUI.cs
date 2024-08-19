@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ReachedTheMoonUI : MonoBehaviour {
 
-    [SerializeField] private Transform epilogueText;
+    [SerializeField] private TextTypewriter finalText;
 
     void Start() {
         GameManager.Instance.OnCompleteGame += GameManager_OnCompleteGame;
@@ -18,6 +18,7 @@ public class ReachedTheMoonUI : MonoBehaviour {
 
     private void Show() {
         gameObject.SetActive(true);
+        finalText.StartShowing();
     }
 
     private void Hide() {

@@ -11,7 +11,6 @@ public class GameManager : MonoBehaviour {
     public static GameManager Instance { get; private set; }
 
     public event EventHandler OnGameStateChanged;
-    public event EventHandler OnTogglePause;
     public event EventHandler<OnLadderAddedEventArgs> OnLadderAdded;
     public class OnLadderAddedEventArgs : EventArgs {
         public Vector2 ladderPosition;
@@ -34,9 +33,6 @@ public class GameManager : MonoBehaviour {
     private int currentNumberOfLadders;
     private List<GameObject> currentBuiltLadder = new List<GameObject>();
 
-    private float TEMPORARY_TIMER_TIME = 2f;
-    private float TEMPORARY_TIMER = 0f;
-
     private void Awake() {
         Instance = this;
         state = State.WaitingToStart;
@@ -45,10 +41,17 @@ public class GameManager : MonoBehaviour {
 
     private void Start() {
         LayerManager.Instance.OnLayerChanged += LayerManager_OnLayerChanged;
+        GameInputManager.Instance.OnAnyKeyAction += GameInputManager_OnAnyKeyAction;
 
         var baseLadder = FindObjectOfType<Ladder>().gameObject;
         Destroy(baseLadder.GetComponent<Ladder>());
         currentBuiltLadder.Add(baseLadder);
+    }
+
+    private void GameInputManager_OnAnyKeyAction(object sender, EventArgs e) {
+        if (state == State.WaitingToStart) {
+            ChangeState(State.GamePlaying);
+        }
     }
 
     private void LayerManager_OnLayerChanged(object sender, EventArgs e) {
@@ -62,18 +65,16 @@ public class GameManager : MonoBehaviour {
     private void Update() {
         switch (state) {
             case State.WaitingToStart:
-                TEMPORARY_TIMER += Time.deltaTime;
-                if (TEMPORARY_TIMER > TEMPORARY_TIMER_TIME) {
-                    ChangeState(State.GamePlaying);
-                }
                 break;
             case State.GamePlaying:
-                if (currentFallingLadder == null) {
+                bool isCurrentLadderNull = currentFallingLadder == null;
+                bool didNotReachTheMoon = currentNumberOfLadders < LayerManager.Instance.GetMaxHeightForLayer(LayerManager.Layer.Space);
+                bool shouldSpawnNewLadder = isCurrentLadderNull && didNotReachTheMoon;
+                if (shouldSpawnNewLadder) {
                     currentFallingLadder = LadderSpawner.Instance.SpawnNewLadder();
                 }
                 break;
             case State.GameOver:
-                Debug.Log("GameOver");
                 break;
             case State.ReachedTheMoon:
                 break;

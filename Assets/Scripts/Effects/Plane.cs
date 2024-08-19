@@ -63,8 +63,5 @@ public class Plane : MonoBehaviour {
             // Spawned at the left and go to the right
             offscreenPosition = transform.position.x + 45;
         }
-        // TODO: maybe?
-        // float size = Random.Range(sizeMinMax.x, sizeMinMax.y);
-        // sprite.localScale *= size;
     }
 }

@@ -14,21 +14,15 @@ public class TextTypewriter : MonoBehaviour {
         text = GetComponent<TextMeshProUGUI>();
     }
 
-    void Start() {
-        StartCoroutine(ShowText());
-    }
-
-    void Update() {
-
-    }
-
     private IEnumerator ShowText() {
-        yield return new WaitForSeconds(2);
-
-        for (int i = 0; i < fullText.Length; i++) {
+        for (int i = 0; i <= fullText.Length; i++) {
             currentText = fullText.Substring(0, i);
             text.text = currentText;
             yield return new WaitForSeconds(delay);
         }
+    }
+
+    public void StartShowing() {
+        StartCoroutine(ShowText());
     }
 }

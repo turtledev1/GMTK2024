@@ -31,7 +31,6 @@ public class PlanesManager : MonoBehaviour {
 
     private void SpawnPlane() {
         Vector2 direction = new Vector2(Random.Range(-1f, 1f) > 0 ? 1 : -1, 0);
-        Debug.Log("Spawn plane: " + direction);
 
         Vector3 screenLeftBottom = Camera.main.ViewportToWorldPoint(new Vector3(0f, 0.5f, 0));
         Vector3 screenLeftTop = Camera.main.ViewportToWorldPoint(new Vector3(0f, 1f, 0));
