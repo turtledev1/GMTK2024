@@ -17,7 +17,7 @@ public class LayerManager : MonoBehaviour {
         Moon,
     }
 
-    private const int groundMaxHeight = 15;
+    private const int groundMaxHeight = 10;
     private const int lowerSkyMaxHeight = 35;
     private const int skyMaxHeight = 60;
     private const int atmosphereMaxHeight = 75;

@@ -52,6 +52,12 @@ public class EffectManager : MonoBehaviour {
                 PlanesManager.Instance.SetIsActive(false);
                 AlienManager.Instance.SetIsActive(true);
                 break;
+            case LayerManager.Layer.Moon:
+                WindManager.Instance.SetIsActive(false);
+                CloudsManager.Instance.SetIsActive(false);
+                PlanesManager.Instance.SetIsActive(false);
+                AlienManager.Instance.SetIsActive(false);
+                break;
         }
     }
 }

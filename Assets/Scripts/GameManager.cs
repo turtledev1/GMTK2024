@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour {
 
+    [SerializeField] private AudioClip finishGameMusic;
+
     public static GameManager Instance { get; private set; }
 
     public event EventHandler OnGameStateChanged;
@@ -16,6 +18,8 @@ public class GameManager : MonoBehaviour {
     }
     public event EventHandler OnLadderLost;
     public event EventHandler OnLifeLost;
+    public event EventHandler OnGameOver;
+    public event EventHandler OnCompleteGame;
 
     private enum State {
         WaitingToStart,
@@ -50,6 +54,8 @@ public class GameManager : MonoBehaviour {
     private void LayerManager_OnLayerChanged(object sender, EventArgs e) {
         if (LayerManager.Instance.GetCurrentLayer() == LayerManager.Layer.Moon) {
             ChangeState(State.ReachedTheMoon);
+            MusicManager.Instance.ChangeMusic(finishGameMusic);
+            OnCompleteGame?.Invoke(this, EventArgs.Empty);
         }
     }
 
@@ -117,6 +123,7 @@ public class GameManager : MonoBehaviour {
 
         if (numberOfLives <= 0) {
             ChangeState(State.GameOver);
+            OnGameOver?.Invoke(this, EventArgs.Empty);
         }
     }
 

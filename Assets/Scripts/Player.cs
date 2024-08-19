@@ -26,10 +26,17 @@ public class Player : MonoBehaviour {
     private void Update() {
         if (shouldMove) {
             transform.position = Vector2.MoveTowards(transform.position, positionToGo, moveSpeed * Time.deltaTime);
+            if (Vector2.Distance(transform.position, positionToGo) < 0.05f) {
+                shouldMove = false;
+            }
         }
     }
 
     public float GetCurrentHeight() {
         return transform.position.y;
+    }
+
+    public bool IsMoving() {
+        return shouldMove;
     }
 }

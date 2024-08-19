@@ -14,16 +14,21 @@ public class WindManager : MonoBehaviour {
     public event EventHandler OnWindActivated;
     public event EventHandler OnWindDeactivated;
 
+    private AudioSource windSound;
+
     private bool isActive = false;
     private float windTimer = 0;
     private Vector2 currentWind = Vector2.zero;
     private float targetWindDirection;
     private float currentWindDirection;
+    private float targetWindForce;
     private float currentWindForce;
     private float windChangeRate;
 
     private void Awake() {
         Instance = this;
+
+        windSound = GetComponent<AudioSource>();
     }
 
     private void Start() {
@@ -40,6 +45,7 @@ public class WindManager : MonoBehaviour {
 
     private void ApplyWind() {
         currentWindDirection = Mathf.Lerp(currentWindDirection, targetWindDirection, Time.deltaTime * windDirectionChangeSpeed);
+        currentWindForce = Mathf.Lerp(currentWindForce, targetWindForce, Time.deltaTime * windDirectionChangeSpeed);
         currentWind = new Vector2(currentWindForce * currentWindDirection, 0);
 
         windTimer += Time.deltaTime;
@@ -51,7 +57,7 @@ public class WindManager : MonoBehaviour {
 
     private void RandomizeWind() {
         targetWindDirection = UnityEngine.Random.Range(-1f, 1f) > 0 ? 1f : -1f;
-        currentWindForce = UnityEngine.Random.Range(windSpeedMinMax.x, windSpeedMinMax.y);
+        targetWindForce = UnityEngine.Random.Range(windSpeedMinMax.x, windSpeedMinMax.y);
 
         windChangeRate = UnityEngine.Random.Range(windChangeRateMinMax.x, windChangeRateMinMax.y);
     }
@@ -63,8 +69,10 @@ public class WindManager : MonoBehaviour {
     public void SetIsActive(bool active) {
         isActive = active;
         if (isActive) {
+            windSound.Play();
             OnWindActivated?.Invoke(this, EventArgs.Empty);
         } else {
+            windSound.Stop();
             OnWindDeactivated?.Invoke(this, EventArgs.Empty);
         }
     }

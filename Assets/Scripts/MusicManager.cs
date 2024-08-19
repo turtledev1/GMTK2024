@@ -10,6 +10,7 @@ public class MusicManager : MonoBehaviour {
 
     private AudioSource audioSource;
     private float volume = 0.4f;
+    public float fadeDuration = 2.0f;
 
     private void Awake() {
         Instance = this;
@@ -30,5 +31,31 @@ public class MusicManager : MonoBehaviour {
 
     public float GetVolume() {
         return volume;
+    }
+
+    public void ChangeMusic(AudioClip newMusic) {
+        StartCoroutine(FadeOutIn(newMusic));
+    }
+
+    private IEnumerator FadeOutIn(AudioClip newMusic) {
+        float startVolume = audioSource.volume;
+
+        for (float t = 0; t < fadeDuration; t += Time.deltaTime) {
+            audioSource.volume = Mathf.Lerp(startVolume, 0, t / fadeDuration);
+            yield return null;
+        }
+
+        audioSource.volume = 0;
+        audioSource.Stop();
+
+        audioSource.clip = newMusic;
+        audioSource.Play();
+
+        for (float t = 0; t < fadeDuration; t += Time.deltaTime) {
+            audioSource.volume = Mathf.Lerp(0, startVolume, t / fadeDuration);
+            yield return null;
+        }
+
+        audioSource.volume = startVolume;
     }
 }

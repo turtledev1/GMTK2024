@@ -11,10 +11,12 @@ public class Alien : MonoBehaviour {
     [SerializeField] private float maxTiltAngle = 20f;
     [SerializeField] private float rotationSpeed = 100f;
     [SerializeField] private float stayAtPositionMaxTime = 2f;
-    [SerializeField] private float effectMaxTime = 4f;
+    [SerializeField] private float effectMaxTime = 5f;
+    [SerializeField] private AudioClip flareInEffect;
 
     private Animator animator;
     private Volume postProcessingVolume;
+    private AudioSource audioSource;
 
     private Vector2 targetPosition;
     private float stayAtPositionTimer = 0;
@@ -24,10 +26,12 @@ public class Alien : MonoBehaviour {
     private void Awake() {
         animator = GetComponent<Animator>();
         postProcessingVolume = GetComponent<Volume>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     private void Start() {
         SetRandomTargetPosition();
+        transform.position = targetPosition;
     }
 
     private void Update() {
@@ -38,6 +42,7 @@ public class Alien : MonoBehaviour {
             if (effectTimer > effectMaxTime) {
                 GameInputManager.Instance.SetReversedControls(false);
                 hasDoneFlare = false;
+                audioSource.Stop();
                 if (postProcessingVolume.profile.TryGet(out WhiteBalance whiteBalance)) {
                     whiteBalance.temperature.value = 0;
                 }
@@ -98,6 +103,7 @@ public class Alien : MonoBehaviour {
         if (postProcessingVolume.profile.TryGet(out WhiteBalance whiteBalance)) {
             whiteBalance.temperature.value = -50f;
         }
+        audioSource.Play();
 
         GameInputManager.Instance.SetReversedControls(true);
     }

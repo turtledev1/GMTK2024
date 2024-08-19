@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -33,7 +34,7 @@ public class AlienManager : MonoBehaviour {
             alien = Instantiate(alienPrefab, new Vector3(), Quaternion.identity).GetComponent<Alien>();
         } else {
             if (alien != null) {
-                Destroy(alien);
+                Destroy(alien.gameObject);
                 alien = null;
             }
         }
